@@ -1,5 +1,8 @@
 package com.auster.thatcrapluxiandfischwantedonourserver.items.myitems.items;
 
+import com.auster.thatcrapluxiandfischwantedonourserver.ThatCrapLuxiandFischWantedOnOurServer;
+import de.tr7zw.changeme.nbtapi.NBTItem;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -18,7 +21,7 @@ public class EmberRod extends MyItem {
         material = Material.BLAZE_ROD;
         name = "Ember Rod";
         itemStackName = ChatColor.RED + "Ember Rod";
-        modelid = 1234;
+        modelid = 1234567;
 
     }
 
@@ -35,30 +38,50 @@ public class EmberRod extends MyItem {
     @Override
     public void leftClickAirAction(Player var1, ItemStack var2) {
     }
-    public void onItemUse(Player var1) {
+
+    public void onItemUse(Player var1, ItemStack var2) {
+        NBTItem ni = new NBTItem(var2, true);
+        if (ni.getBoolean("cooldown")) return;
+        boolean success = false;
         if (var1.getGameMode().equals(GameMode.CREATIVE)) {
-            var fb =var1.getWorld().spawn(var1.getLocation(), Fireball.class);
+            var fb = var1.getWorld().spawn(var1.getEyeLocation(), Fireball.class);
             fb.setGlowing(false);
             fb.setBounce(true);
             fb.setYield(5f);
-            return;
-        }
-        if (var1.getInventory().contains(Material.MAGMA_CREAM)) {
-            for (var item:
-                 var1.getInventory()) {
+            success = true;
+        } else if (var1.getInventory().contains(Material.MAGMA_CREAM)) {
+            for (var item :
+                    var1.getInventory()) {
                 if (item.getType().equals(Material.MAGMA_CREAM)) {
-                    item.setAmount(item.getAmount()- 1);
-                    var fb =var1.getWorld().spawn(var1.getLocation(), Fireball.class);
+                    item.setAmount(item.getAmount() - 1);
+                    var fb = var1.getWorld().spawn(var1.getEyeLocation(), Fireball.class);
                     fb.setGlowing(false);
                     fb.setBounce(true);
                     fb.setYield(5f);
-
+                    success = true;
                     break;
                 }
 
             }
 
         }
+        if (success) {
+            ni.setBoolean("cooldown", true);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(ThatCrapLuxiandFischWantedOnOurServer.getInstance(), () -> {
+                for (ItemStack itemsta : var1.getInventory().getContents()) {
+                    if (CustomItems.isCustomItem(itemsta) && CustomItems.isType(itemsta, EmberRod.class)) {
+
+                        NBTItem nbtItem = new NBTItem(itemsta, true);
+                        if (nbtItem.getBoolean("cooldown")) {
+                            nbtItem.setBoolean("cooldown", false);
+                            break;
+                        }
+                    }
+
+                }
+            }, 20);
+        }
+
 
     }
 
@@ -68,13 +91,13 @@ public class EmberRod extends MyItem {
 
     @Override
     public void rightClickAirAction(Player var1, ItemStack var2) {
-        onItemUse(var1);
+        onItemUse(var1, var2);
 
     }
 
     @Override
     public void rightClickBlockAction(Player var1, PlayerInteractEvent var2, Block var3, ItemStack var4) {
-        onItemUse(var1);
+        onItemUse(var1, var4);
 
     }
 

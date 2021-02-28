@@ -4,6 +4,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,9 +12,8 @@ import java.util.logging.Level;
 
 public class MyConfig extends YamlConfiguration {
     private final Plugin plugin;
-    private String name;
-    private File file;
-    ;
+    private final String name;
+    private final File file;
 
     public MyConfig(String name, Plugin plugin) {
         this.name = name;
@@ -31,8 +31,7 @@ public class MyConfig extends YamlConfiguration {
     }
 
     private void loadConfig() throws IOException, InvalidConfigurationException {
-        if (!plugin.getDataFolder().exists())
-            plugin.getDataFolder().mkdir();
+
 
         if (!file.exists()) {
             try {
@@ -65,6 +64,8 @@ public class MyConfig extends YamlConfiguration {
         }
     }
 
+    @Override
+    @Nonnull
     public String getName() {
         return name;
     }
