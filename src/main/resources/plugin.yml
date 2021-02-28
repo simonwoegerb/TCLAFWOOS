@@ -1,0 +1,11 @@
+name: ThatCrapLuxiandFischWantedOnOurServer
+version: ${project.version}
+main: com.auster.thatcrapluxiandfischwantedonourserver.ThatCrapLuxiandFischWantedOnOurServer
+api-version: 1.16
+prefix: TCLaFWOOS
+authors: [ Auster ]
+description: Name says it all
+commands:
+  playerdata:
+  givecustomitem:
+  setnbt:
