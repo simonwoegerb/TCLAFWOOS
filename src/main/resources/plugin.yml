@@ -1,11 +1,9 @@
-name: ThatCrapLuxiandFischWantedOnOurServer
+name: StaticItems
 version: ${project.version}
-main: com.auster.thatcrapluxiandfischwantedonourserver.ThatCrapLuxiandFischWantedOnOurServer
-api-version: 1.16
-prefix: TCLaFWOOS
+main: live.auster.staticitems.StaticItems
+api-version: 1.19
+prefix: SI
 authors: [ Auster ]
-description: Name says it all
+description: Static Items :)
 commands:
-  playerdata:
-  givecustomitem:
-  setnbt:
+  giveitem:
